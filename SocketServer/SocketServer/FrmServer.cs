@@ -19,19 +19,19 @@ namespace SocketServer
         #region 变量
         //定义回调:解决跨线程访问问题
         private delegate void SetTextValueCallBack(string strValue);
+        //声明回调
+        private SetTextValueCallBack setCallBack;
         //定义接收客户端发送消息的回调
         private delegate void ReceiveMsgCallBack(string strReceive);
         //声明回调
-        private SetTextValueCallBack setCallBack;
-        //声明
         private ReceiveMsgCallBack receiveCallBack;
         //定义回调：给ComboBox控件添加元素
         private delegate void SetCmbCallBack(string strItem);
-        //声明
+        //声明回调
         private SetCmbCallBack setCmbCallBack;
         //定义发送文件的回调
         private delegate void SendFileCallBack(byte[] bf);
-        //声明
+        //声明回调
         private SendFileCallBack sendCallBack;
 
         //用于通信的Socket
@@ -76,10 +76,14 @@ namespace SocketServer
             socketWatch.Listen(10);
 
             //实例化回调
-            setCallBack = new SetTextValueCallBack(SetTextValue);
-            receiveCallBack = new ReceiveMsgCallBack(ReceiveMsg);
-            setCmbCallBack = new SetCmbCallBack(AddCmbItem);
-            sendCallBack = new SendFileCallBack(SendFile);
+            //setCallBack = new SetTextValueCallBack(SetTextValue); SetTextValue；
+            //receiveCallBack = new ReceiveMsgCallBack(ReceiveMsg);
+            //setCmbCallBack = new SetCmbCallBack(AddCmbItem);
+            //sendCallBack = new SendFileCallBack(SendFile);
+            setCallBack = SetTextValue;
+            receiveCallBack = ReceiveMsg;
+            setCmbCallBack = AddCmbItem;
+            sendCallBack = SendFile;
 
             //创建线程
             AcceptSocketThread = new Thread(new ParameterizedThreadStart(StartListen));
